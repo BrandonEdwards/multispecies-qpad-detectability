@@ -2,8 +2,8 @@
 # Brandon P.M. Edwards
 # Multi-species QPAD Detectability
 # 03-removal-model-full.R
-# Created May 2022
-# Last Updated April 2022
+# Created April 2022
+# Last Updated May 2022
 
 ####### Import Libraries and External Files #######
 
