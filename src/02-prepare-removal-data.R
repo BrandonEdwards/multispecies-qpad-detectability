@@ -146,4 +146,4 @@ for (s in species)
 
 ####### Output ####################################
 
-save(Y, D, CV_fold, sp_list, species, file = "removal_data.rda")
+save(Y, D, CV_fold, sp_list, species, file = "data/generated/removal_data.rda")
