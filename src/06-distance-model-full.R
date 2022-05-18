@@ -1,93 +1,23 @@
 ####### Script Information ########################
 # Brandon P.M. Edwards
 # Multi-species QPAD Detectability
-# 03-distance-model.R
+# 06-distance-model-full.R
 # Created April 2022
-# Last Updated April 2022
+# Last Updated May 2022
 
 ####### Import Libraries and External Files #######
 
-library(plyr)
 library(rstan)
 options(mc.cores = parallel::detectCores())
 rstan_options(auto_write = TRUE)
 
 ####### Read Data #################################
 
-load("data/raw/dist_count_matrix.rda")
-load("data/raw/dist_design.rda")
+load("data/generated/distance_data.rda")
 load("data/generated/turdidae_corr_matrix.rda")
 binomial <- read.csv("data/generated/binomial_names.csv")
 
 ####### Wrangle Data for Modelling ################
-
-# Change infinite values to some other very large number to avoid Stan issues
-dist_design <- do.call(data.frame,lapply(dist_design, function(x) replace(x, is.infinite(x),1000)))
-
-# Most of this code adopted from Edwards et al. 2022
-
-# Drop method I
-dist_count_matrix <- dist_count_matrix[-which(dist_count_matrix$Distance_Method == "I"), ]
-dist_design <- dist_design[-which(dist_design$Method == "I"), ]
-
-max_bands <- ncol(dist_design) - 2
-count_names <- c("Sample_ID", "Species", "Distance_Method",
-                 paste0(rep("Int", times = max_bands), 1:max_bands))
-names(dist_count_matrix) <- count_names
-
-design_names <- c("Distance_Method", "Max_Distance",
-                  paste0(rep("Interval", times = max_bands), 1:max_bands))
-names(dist_design) <- design_names
-
-# Join data
-count_design <- plyr::join(dist_count_matrix, dist_design,
-                           by = "Distance_Method", type = "left")
-
-# Filter out methods with only 1 interval
-to_remove <- which(is.na(count_design$Interval2))
-count_design <- count_design[-c(to_remove), ]
-
-# Create separate data frames
-counts <- count_design[,c("Sample_ID", "Species", "Distance_Method", count_names[4:length(count_names)])]
-design <- count_design[,c("Sample_ID", "Species", "Distance_Method", design_names[3:length(design_names)])]
-names(design) <- names(counts)
-col_names <- names(counts)[4:length(names(counts))]
-
-# Change 0s to NA in counts table where appropriate based on design table
-for (i in col_names)
-{
-  indices <- which(counts[, i] == 0)
-  
-  counts[indices, i] <- ifelse(is.na(design[indices, i]), NA, 0)
-}
-
-# Re-order the species so that they match the correlation matrix
-species <- sort(as.character(unique(counts$Species)))
-bin_turdidae <- binomial[which(binomial$Code %in% species), ]
-bin_turdidae$Scientific <- gsub(" ", "_", bin_turdidae$Scientific)
-bin_turdidae <- bin_turdidae[match(colnames(corr_matrix), bin_turdidae$Scientific),]
-species <- bin_turdidae$Code
-
-# List of input counts
-Y <- vector(mode = "list", length = length(species))
-names(Y) <- species
-
-# List of input design
-D <- vector(mode = "list", length = length(species))
-names(D) <- species
-
-# Species indicator list
-sp_list <- vector(mode = "list", length = length(species))
-names(sp_list) <- species
-
-for (s in species)
-{
-  n_counts <- nrow(counts[counts$Species == s, ])
-  
-  Y[[s]] <- as.matrix(counts[counts$Species==s, col_names])
-  D[[s]] <- as.matrix(design[design$Species==s, col_names])
-  sp_list[[s]] <- data.frame(Species = rep(s, n_counts))
-}
 
 Y <- Y[lengths(Y) != 0]; Y <- do.call(rbind, Y)
 D <- D[lengths(D) != 0]; D <- do.call(rbind, D)
@@ -128,6 +58,8 @@ stan_data <- list(n_samples = n_samples,
                   max_dist = max_dist,
                   phylo_corr = corr_matrix)
 
+save(stan_data, file = "data/generated/distance_turdidae_data.rda")
+
 ####### Output ####################################
 
 model <- stan_model(file = "models/distance.stan")
@@ -157,5 +89,5 @@ stan_job <- sampling(model,
 
 ####### Output ####################################
 
-save(stan_job, file = "data/generated/distance_turdidae_model.rda")
-save(stan_data, file = "data/generated/distance_turdidae_data.rda")
+save(stan_job, file = "data/generated/distance_turdidae_model_full.rda")
+
