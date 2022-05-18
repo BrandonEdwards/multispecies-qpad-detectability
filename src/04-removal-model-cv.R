@@ -54,7 +54,7 @@ for (fold in 1:10)
   max_time[is.na(max_time)] <- 0
   
   n_samples <- nrow(Y_train)
-  n_species <- length(unique(sp_list[,1]))
+  n_species <- length(unique(sp_list_train[,1]))
   max_intervals <- ncol(Y_train)
   
   stan_data <- list(n_samples = n_samples,

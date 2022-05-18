@@ -14,7 +14,6 @@ rstan_options(auto_write = TRUE)
 ####### Read Data #################################
 
 load("data/generated/removal_data.rda")
-#load("data/raw/time_design.rda")
 load("data/generated/turdidae_corr_matrix.rda")
 binomial <- read.csv("data/generated/binomial_names.csv")
 
@@ -23,7 +22,6 @@ binomial <- read.csv("data/generated/binomial_names.csv")
 Y <- Y[lengths(Y) != 0]; Y <- do.call(rbind, Y)
 D <- D[lengths(D) != 0]; D <- do.call(rbind, D)
 sp_list <- sp_list[lengths(sp_list) != 0]; sp_list <- do.call(rbind, sp_list)
-CV_fold <- CV_fold[lengths(CV_fold) != 0]; CV_fold <- unname(unlist(CV_fold))
 
 #' Corresponds with "bands_per_sample" in removal.stan
 time_bands_per_sample <- unname(apply(Y, 1, function(x) sum(!is.na(x))))
