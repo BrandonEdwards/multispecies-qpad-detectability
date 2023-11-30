@@ -24,7 +24,10 @@ n_iter <- 2000
 n_warmup <- 1000
 n_chains <- 4
 refresh <- 10
-threads_per_chain <- 7
+threads_per_chain <- 3
+
+distance_stan_data <- subset_distance_data(distance_stan_data = distance_stan_data,
+                                           sps = "RUHU")
 
 distance_stan_data$grainsize <- 1
 
@@ -47,19 +50,33 @@ distance_stan_data$mass <- distance_stan_data$mass[,1]
 
 ####### Run Model #################################
 
-model_file <- cmdstan_model(stan_file = "models/distance_cp.stan",
-                            cpp_options = list(stan_threads = TRUE))
+ss_model <- cmdstan_model(stan_file = "models/distance_single.stan",
+                          cpp_options = list(stan_threads = TRUE))
 
-stan_run <- model_file$sample(
+stan_run <- ss_model$sample(
   data = distance_stan_data,
   iter_warmup = n_warmup,
   iter_sampling = n_iter,
   chains = n_chains,
   parallel_chains = n_chains,
   refresh = refresh,
-  threads_per_chain = threads_per_chain,
-  output_dir = "output/model_runs/stan_output/",
-  init = inits
+  threads_per_chain = threads_per_chain
 )
+
+
+
+
+
+
+
+
+
+
+
+
+model_file <- cmdstan_model(stan_file = "models/distance_cp.stan",
+                            cpp_options = list(stan_threads = TRUE))
+
+
 
 stan_run$save_object(file = paste0("output/model_runs/distance_predictions.RDS"))
