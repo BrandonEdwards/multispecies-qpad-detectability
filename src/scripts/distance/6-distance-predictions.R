@@ -3,15 +3,15 @@
 # Multi-species QPAD Detectability
 # 6-distance-predictions.R
 # Created October 2022
-# Last Updated October 2023
+# Last Updated March 2024
 
 ####### Import Libraries and External Files #######
 
 library(cmdstanr)
 library(dplyr)
+library(napops)
 
 source("src/functions/generate-distance-inits.R")
-source("src/functions/subset-distance-data.R")
 
 ####### Load Data #################################
 
@@ -28,8 +28,9 @@ threads_per_chain <- 7
 
 distance_stan_data$grainsize <- 1
 
+napops_species <- list_species()
 inits <- generate_distance_inits(n_chains = n_chains,
-                                 napops_skip = c("BITH", "HASP", "KIWA", "LCTH", "LEPC", "SPOW"),
+                                 napops_skip = setdiff(distance_stan_data$sp_all, napops_species$Species),
                                  sp_list = distance_stan_data$sp_all,
                                  param = "cp",
                                  species_cp = distance_stan_data$species_cp,

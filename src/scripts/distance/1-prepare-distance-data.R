@@ -3,7 +3,7 @@
 # Multi-species QPAD Detectability
 # 1-prepare-distance-data.R
 # Created August 2022
-# Last Updated October 2023
+# Last Updated March 2024
 
 ####### Import Libraries and External Files #######
 
@@ -12,13 +12,11 @@ library(Matrix)
 library(plyr)
 library(magrittr)
 
-source("src/functions/generate-phylo-corr.R")
-
 ####### Read Data #################################
 
 load("data/raw/dist_count_matrix.rda")
 load("data/raw/dist_design.rda")
-load(file = "data/generated/corr_matrix_predict.rda")
+load(file = "data/generated/corr_matrix_all.rda")
 binomial <- read.csv("data/generated/binomial_names.csv")
 traits <- read.csv("data/raw/traits.csv")
 
@@ -67,7 +65,7 @@ for (i in col_names)
 # Get species codes and order of species codes for the Prediction Matrix
 species_pred <- gsub(pattern = "_",
                      replacement= " ",
-                     x = rownames(corr_matrix_predict))
+                     x = rownames(corr_matrix))
 binomial_pred <- binomial[which(binomial$Scientific_BT %in% species_pred), ]
 binomial_pred <- binomial_pred[match(species_pred, binomial_pred$Scientific_BT), ]
 #' There is a non-zero chance that Rufous hummingbird is weirdly a problematic species
