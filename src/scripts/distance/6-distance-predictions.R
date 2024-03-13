@@ -29,8 +29,10 @@ threads_per_chain <- 7
 distance_stan_data$grainsize <- 1
 
 napops_species <- list_species()
+inits_to_skip <- setdiff(distance_stan_data$sp_all, 
+                         napops_species[-which(napops_species$Distance == 0), "Species"])
 inits <- generate_distance_inits(n_chains = n_chains,
-                                 napops_skip = setdiff(distance_stan_data$sp_all, napops_species$Species),
+                                 napops_skip = inits_to_skip,
                                  sp_list = distance_stan_data$sp_all,
                                  param = "cp",
                                  species_cp = distance_stan_data$species_cp,
