@@ -1,7 +1,7 @@
 \documentclass[12pt]{article}
 %DIF LATEXDIFF DIFFERENCE FILE
 %DIF DEL article/article.tex      Fri Jul  4 13:53:25 2025
-%DIF ADD article/article_r1.tex   Fri Jul 11 11:35:31 2025
+%DIF ADD article/article_r1.tex   Fri Jul 18 15:40:39 2025
 
 \usepackage{setspace}
 \doublespacing
@@ -118,7 +118,7 @@
 		However, probability of detection is often unaccounted for \DIFdelbegin \DIFdel{or unavailable }\DIFdelend on a species level. 
 		Although methods to estimate detection probability have been developed and implemented for many North American birds, estimates are most accurate for common, easy to detect species. 
 		There is therefore a need for methodology that provides detection estimates for species that are rare or undersampled, which generally lack sufficient data for accurate estimates. 
-		Here, \DIFaddbegin \DIFadd{based on results of a previous study, }\DIFaddend we take advantage of similarities in detection probabilities among phylogenetically-related species and species with similar traits to estimate detection probabilities in seven species of rare North American birds, using hierarchical Bayesian multi-species removal and distance models. 
+		Here, \DIFaddbegin \DIFadd{based on results of a previous study investigating trait-based relationships of detectability, }\DIFaddend we take advantage of similarities in detection probabilities among phylogenetically-related species and species with similar traits to estimate detection probabilities in seven species of rare North American birds, using hierarchical Bayesian multi-species removal and distance models. 
 		We showed that a multi-species model improved precision of detectability estimates for species with low sample size, and even with species up to 1000 observations.
 		However, when no data were available for a species, the multi-species models presented here tended to \DIFdelbegin \DIFdel{be overly conservative in predicting detectability}\DIFdelend \DIFaddbegin \DIFadd{do a poor job at predicting detectability, based on traits and phylogeny alone}\DIFaddend . 
 		We recommend using these models to 1) provide more precise estimates of detectability for species where there are sufficient data, 2) generate estimates of detectability for species for which we have sparse (but non-zero) data, and 3) improve upon previous estimates of detection probabilities for North American birds by combining this model with survey-level covariates.
@@ -173,10 +173,10 @@ They also found that detection distance was related to species’ traits such as
 
 \par \citet{solymos_phylogeny_2018} recommended using these phylogenetic and trait relationships to predict components of detectability (i.e., availability through cue rate, and perceptibility through detection distance) more broadly.
  By leveraging information provided by species with many detections in available datasets, it may be possible to inform detectability estimates for species with fewer (including potentially zero) detections \citep{sollmann_hierarchical_2016, pacifici_guidelines_2014, zipkin_impacts_2009, white_conservation_2013}.
-This could be done in two ways: by making use of shrinkage factors and partial pooling, as done in Bayesian hierarchical models \citep{gelman_what_2021, gelman_bayesian_2006}, and by accounting for phylogenetic relationships and the relative \DIFdelbegin \DIFdel{"relatedness " }\DIFdelend \DIFaddbegin \DIFadd{relatedness }\DIFaddend of different species, as done with Gaussian processes \citep{bernardo_regression_1998, mcelreath_continous_2020}.
+This could be done in two ways: by making use of shrinkage factors and partial pooling, as done in Bayesian hierarchical models \citep{gelman_what_2021, gelman_bayesian_2006}, and by accounting for phylogenetic relationships and the relative \DIFdelbegin \DIFdel{"relatedness " }\DIFdelend \DIFaddbegin \DIFadd{relatedness }\DIFaddend of different species, as \DIFdelbegin \DIFdel{done with }\DIFdelend \DIFaddbegin \DIFadd{can be done with covariance matrices or }\DIFaddend Gaussian processes \citep{bernardo_regression_1998, mcelreath_continous_2020}.
 
 \par The goal of this paper is to create a multi-species model of detectability that incorporates species traits and phylogeny, to both allow for the relaxation of sample size requirements for estimating detectability, and to derive estimates of detectability for bird species without any data.
-To achieve this goal, we aimed to satisfy the following objectives:
+To achieve this goal, we \DIFdelbegin \DIFdel{aimed }\DIFdelend \DIFaddbegin \DIFadd{aim }\DIFaddend to satisfy the following objectives:
 \begin{enumerate}
 	\item Compare the mean and precision of estimates of cue rate and EDR produced from a multi-species, Bayesian hierarchical QPAD removal model and distance model, respectively, to estimates produced from single-species models that do not share information across species.
 	For species with \DIFdelbegin \DIFdel{a sufficient sample size}\DIFdelend \DIFaddbegin \DIFadd{sufficient sample sizes}\DIFaddend , we predicted the mean and precision of cue rate and EDR estimates will be similar from multi- and single-species models \citep{edwards_point_2023}.
@@ -187,7 +187,7 @@ To achieve this goal, we aimed to satisfy the following objectives:
 	We predicted that a multi-species model will be able to produce estimates of cue rate or EDR that fall within a reasonable range of estimates from related species.
 \end{enumerate}
 
-\DIFdelbegin \DIFdel{Given these comparisons, we }\DIFdelend \DIFaddbegin \DIFadd{We then }\DIFaddend provide a case study of predicting detectability components for seven species for which we had little to no data: Lesser Prairie-chicken (\textit{Tympanuchus pallidicinctus}), Spotted Owl (\textit{Strix occidentalis}), Bicknell’s Thrush (\textit{Catharus bicknelli}), LeConte’s Thrasher (\textit{Toxostoma lecontei}), Harris’s Sparrow (\textit{Zonotrichia querula}), Tricolored Blackbird (\textit{Agelaius tricolor}), and Kirtland’s Warbler (\textit{Setophaga kirtlandii}). 	
+\DIFdelbegin \DIFdel{Given these comparisons, we }\DIFdelend \DIFaddbegin \DIFadd{We then }\DIFaddend provide a case study of predicting detectability components for seven species for which \DIFdelbegin \DIFdel{we }\DIFdelend \DIFaddbegin \DIFadd{the NA-POPS database }\DIFaddend had little to no data: Lesser Prairie-chicken (\textit{Tympanuchus pallidicinctus}), Spotted Owl (\textit{Strix occidentalis}), Bicknell’s Thrush (\textit{Catharus bicknelli}), LeConte’s Thrasher (\textit{Toxostoma lecontei}), Harris’s Sparrow (\textit{Zonotrichia querula}), Tricolored Blackbird (\textit{Agelaius tricolor}), and Kirtland’s Warbler (\textit{Setophaga kirtlandii}). 	
 All seven of these bird species are listed on Partners in Flight’s watchlist, indicating their conservation importance \citep{will_handbook_2020}. 	
 
 \section{Methods}
@@ -209,14 +209,24 @@ This consists of $712,138$ point counts conducted across $292$ projects in Canad
 \subsubsection{Phylogenetic Trees}
 \par We accessed 2000 pseudo-posterior trees from \citet{jetz_global_2012} for all species with sufficient data for removal modelling ($>75$ observations as per \cite{edwards_point_2023,solymos_evaluating_2018,buckland_introduction_2001}). 
 We also included the following bird species with insufficient removal and/or distance data: Lesser Prairie-chicken, Spotted Owl, Bicknell's Thrush, LeConte's Thrasher, Harris's Sparrow, Tricolored Blackbird, and Kirtland's Warbler. 
-This resulted in 2000 pseudo-posterior trees that contained 323 species.
+\DIFaddbegin \DIFadd{These species are all on Partners in Flight's watchlist, indicating their conservation importance \mbox{%DIFAUXCMD
+\citep{will_handbook_2020}}\hskip0pt%DIFAUXCMD
+, and represent a range of different phylogenies and traits within the bird taxon.
+We did not include Woodhouse's Scrub-jay (}\textit{\DIFadd{Aphelocoma woodhouseii}}\DIFadd{), Pacific Wren (}\textit{\DIFadd{Troglodytes pacificus}}\DIFadd{), or Sagebrush Sparrow (}\textit{\DIFadd{Artemisiospiza nevadensis}}\DIFadd{) in the analysis, because these species were not available in the phylogenies from \mbox{%DIFAUXCMD
+\citet{jetz_global_2012}}\hskip0pt%DIFAUXCMD
+.
+}\DIFaddend This resulted in 2000 pseudo-posterior trees that contained 323 species.
 
-\par We generated a phylogenetic correlation matrix $\mathbf{C}$ using the same methods outlined in the Appendix of \citet{solymos_phylogeny_2018} that generate distances between species based on covariance, as processed using the R package "ape" \citep{paradis_ape_2019}.
+\par We generated a phylogenetic correlation matrix $\mathbf{C}$ using the same methods outlined in the Appendix of \citet{solymos_phylogeny_2018} \DIFdelbegin \DIFdel{that generate distances between species based on covariance, as processed }\DIFdelend using the R package \DIFdelbegin \DIFdel{"}\DIFdelend \DIFaddbegin \DIFadd{``}\DIFaddend ape" \citep{paradis_ape_2019}. 
+\DIFaddbegin \DIFadd{This correlation matrix is a square matrix that identifies the phylogenetic relatedness of one species to other species.
+The values in this matrix range from 0 to 1, with 0 indicating no phylogenetic relatedness, $0 < c < 1$ indicating strength of phylogentic relatedness, and $1$ on the diagonal.
+These values can also be thought of as phylogenetic distances, with values closer to 0 implying that species are phylogenetically further away from each other.
+}\DIFaddend 
 
 \subsubsection{Species Traits}
 \par Species traits (song pitch, migratory vs resident, open vs. closed habitat) were obtained from Birds of the World accounts for all species considered in this study \citep{billerman_birds_2022}. 
-Species were classified as "closed habitat" if their primary habitat was forests, and "open habitat" if their primary habitat was grasslands or shrublands.
-Species with specific areas of their range that are only for breeding (i.e., not year-round throughout their range) were classified as "migratory".
+Species were classified as \DIFdelbegin \DIFdel{"}\DIFdelend \DIFaddbegin \DIFadd{``}\DIFaddend closed habitat" if their primary habitat was forests, and \DIFdelbegin \DIFdel{"}\DIFdelend \DIFaddbegin \DIFadd{``}\DIFaddend open habitat" if their primary habitat was grasslands or shrublands.
+Species with specific areas of their range that are only for breeding (i.e., not year-round throughout their range) were classified as \DIFdelbegin \DIFdel{"}\DIFdelend \DIFaddbegin \DIFadd{``}\DIFaddend migratory".
 We note that for the purposes of this study, altitudinal and latitudinal migrants were classified as migratory, but irruptive species such as crossbills were not.
 Body mass for each bird species was obtained from the Elton traits dataset if available \citep{wilman_eltontraits_2014}, and \DIFaddbegin \DIFadd{otherwise }\DIFaddend through the Birds of the World account \citep{billerman_birds_2022} if not.
 
@@ -284,7 +294,12 @@ $$\mathbf{\Sigma}\DIFdelbegin \DIFdel{_{[s \times s]} }\DIFdelend \DIFaddbegin \
 %DIFDELCMD < \par %%%
 \DIFdelend Here, $\lambda$ is Pagel's Lambda \citep{pagel_inferring_1999}, which determines the strength of the phylogenetic relationship. 
 We set $\lambda = 0.76$, consistent with previous results \cite{solymos_phylogeny_2018}. 
-We could have chosen to draw estimates from a distribution of possible $\lambda$ as in \citet{solymos_phylogeny_2018}, but we chose not to for simplicity. 
+\DIFdelbegin \DIFdel{We could have chosen to draw estimates from a distribution of possible $\lambda$ as in \mbox{%DIFAUXCMD
+\citet{solymos_phylogeny_2018}}\hskip0pt%DIFAUXCMD
+, but we chose not to for simplicity}\DIFdelend \DIFaddbegin \DIFadd{The effect of this is to only scale the strength of the phylogenetic relationship; had we not set a value for this, the scaling strength would have been captured in the estimate of $\sigma$. 
+However, we chose to be explicit here consistent with previous results of \mbox{%DIFAUXCMD
+\cite{solymos_phylogeny_2018}}\hskip0pt%DIFAUXCMD
+}\DIFaddend .
 We note that the suite of species modelled in \citet{solymos_evaluating_2018} was primarily Boreal birds, and so there could be slight differences in the phylogenetic strength of a larger suite of species such as what we model here.
 We also estimated the extra variance term and used an exponential prior $\sigma \sim exp(5)$.
 \DIFdelbegin %DIFDELCMD < 
@@ -341,13 +356,21 @@ $$\sigma \sim exp(5)$$
 
 \par To directly compare the multi-species models described above to its single-species equivalent (see below), we built two Bayesian single-species models using the Stan Probabilistic Language \citep{stan_development_team_stan_2024}.
 The single species models used the same likelihood statements as above for the count data, except rather than cue rate and EDR being estimated with shared information, they are estimated independently from each other.
-That is, \DIFdelbegin \DIFdel{$\log \phi_s \sim N(0,1) \forall s$, and $\log \tau_s \sim N(0,1) \forall s$}\DIFdelend \DIFaddbegin \DIFadd{$\log \phi_s \sim N(0,1)$, and $\log \tau_s \sim N(0,1)$}\DIFaddend , thus making it equivalent to the Null model in \citet{edwards_point_2023}, but estimated in a Bayesian rather than maximum likelihood framework. 
+That is, \DIFdelbegin \DIFdel{$\log \phi_s \sim N(0,1) \forall s$, and $\log \tau_s \sim N(0,1) \forall s$, thus making it equivalent to the Null model in \mbox{%DIFAUXCMD
+\citet{edwards_point_2023}}\hskip0pt%DIFAUXCMD
+, but estimated in a Bayesian rather than maximum likelihood framework}\DIFdelend \DIFaddbegin \DIFadd{$\log \phi_s \sim N(0,1)$, and $\log \tau_s \sim N(0,1)$, implying that the values of $phi$ and $tau$ are drawn as independent samples}\DIFaddend .
+
 
 \subsection{Model Assessment}
 \subsubsection{Objective 1: Single-Species vs. Multi-Species Estimates}
 \par To test our prediction that there would be little change between estimates of species with sufficient sizes, we ran the Bayesian hierarchical QPAD Removal and Distance models on the set of species for which there was sufficient data.
-We did not include Woodhouse's Scrub-jay (\textit{Aphelocoma woodhouseii}), Pacific Wren (\textit{Troglodytes pacificus}), or Sagebrush Sparrow (\textit{Artemisiospiza nevadensis}) in the analysis, because these species were not available in the phylogenies from \citet{jetz_global_2012}.
-Rufous Hummingbird (\textit{Selasphorus rufus}) was dropped from the distance modelling due to issues with divergent transitions \DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
+\DIFdelbegin \DIFdel{We did not include Woodhouse's Scrub-jay (}\textit{\DIFdel{Aphelocoma woodhouseii}}%DIFAUXCMD
+\DIFdel{), Pacific Wren (}\textit{\DIFdel{Troglodytes pacificus}}%DIFAUXCMD
+\DIFdel{), or Sagebrush Sparrow (}\textit{\DIFdel{Artemisiospiza nevadensis}}%DIFAUXCMD
+\DIFdel{) in the analysis, because these species were not available in the phylogenies from \mbox{%DIFAUXCMD
+\citet{jetz_global_2012}}\hskip0pt%DIFAUXCMD
+.
+}\DIFdelend Rufous Hummingbird (\textit{Selasphorus rufus}) was dropped from the distance modelling due to issues with divergent transitions \DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
 \citep{betancourt_diagnosing_2016, leimkuhler_simulating_2005}}\hskip0pt%DIFAUXCMD
 }\DIFdelend \DIFaddbegin \DIFadd{(\mbox{%DIFAUXCMD
 \citet{betancourt_diagnosing_2016, leimkuhler_simulating_2005}}\hskip0pt%DIFAUXCMD
@@ -377,12 +400,12 @@ If our prediction is true, then we would expect to see \DIFdelbegin \DIFdel{majo
 That is, for each of the ten cross-validation runs, we held out all data for 10\% of the species for both the multi-species and single-species models.
 \DIFaddbegin 
 
-\par \DIFaddend To determine which species would be left out in each fold of the removal model, we first split the phylogenetic tree into 10 parts using the \DIFdelbegin \DIFdel{"}\DIFdelend \DIFaddbegin \DIFadd{``}\DIFaddend cutree" function in base R, which preserves relatedness in the 10 parts of the split tree.
+\par \DIFaddend To determine which species would be left out in each fold of the removal model \DIFaddbegin \DIFadd{cross validation}\DIFaddend , we first split the phylogenetic tree into 10 parts using the \DIFdelbegin \DIFdel{"}\DIFdelend \DIFaddbegin \DIFadd{``}\DIFaddend cutree" function in base R, which preserves relatedness in the 10 parts of the split tree.
 Then, for each of the parts of the tree, we randomly assigned a number between 1 and 10 (drawn from a uniform distribution) \DIFdelbegin \DIFdel{to all migratory }\DIFdelend \DIFaddbegin \DIFadd{separately for all migratory and }\DIFaddend then all resident species.
 This ensured that for each fold, there would be a balance of related and unrelated species left out, as well as a relatively equal balance of migratory and resident species left out.
 \DIFaddbegin 
 
-\par \DIFaddend To determine which species would be left out in each fold of the distance model, we randomly assigned a number between 1 and 10 (drawn from a uniform distribution) to each species within a migratory \DIFdelbegin \DIFdel{resident }\DIFdelend \DIFaddbegin \DIFadd{status }\DIFaddend $\times$ habitat preference \DIFaddbegin \DIFadd{grouping combination}\DIFaddend , which ensured that there would be a good balance of species left out for each group of species.
+\par \DIFaddend To determine which species would be left out in each fold of the distance model \DIFaddbegin \DIFadd{cross validation}\DIFaddend , we randomly assigned a number between 1 and 10 (drawn from a uniform distribution) to each species within a migratory \DIFdelbegin \DIFdel{resident }\DIFdelend \DIFaddbegin \DIFadd{status }\DIFaddend $\times$ habitat preference \DIFaddbegin \DIFadd{grouping combination}\DIFaddend , which ensured that there would be a good balance of species left out for each group of species.
 \DIFdelbegin \DIFdel{Because Stan allows draws from a posterior distribution even with no data}\DIFdelend \DIFaddbegin 
 
 \DIFadd{For each cross-validation fold}\DIFaddend , we drew values from the posterior distribution of \DIFdelbegin \DIFdel{all the held out speciesfor each cross-validation fold}\DIFdelend \DIFaddbegin \DIFadd{the held-out species}\DIFaddend , and used mean and standard deviation of those draws as the predicted cue rate or EDR.
@@ -632,7 +655,7 @@ We suggest that this type of model---where information about detectability is sh
 
 \begin{figure}[h]
 	\includegraphics{../output/plots/1vs1.png}
-	\caption{1-to-1 plot comparing cue rates (A) and EDRs (B) estimated from the single-species model vs the multi-species model for each species. Red dashed line denotes the 1-to-1 line. Black line is regression line with posterior draws in grey. Grey dots are individual species.}
+	\caption{1-to-1 plot comparing cue rates (A) and EDRs (B) estimated from the single-species model vs the multi-species model for each species. Red dashed line denotes the 1-to-1 line. \DIFdelbeginFL \DIFdelFL{Black line is regression line with posterior draws in grey. }\DIFdelendFL Grey dots are individual species.}
 	\label{fig:1vs1}
 \end{figure}
 
@@ -656,13 +679,13 @@ We suggest that this type of model---where information about detectability is sh
 
 \begin{figure}[h]
 	\includegraphics{../output/plots/species_cv_plot.png}
-	\caption{(A) Estimates of cue rate for a species (black dots) given full data versus predictions of cue rate for the same species given no data. (B) Estimates of effective detection radius (EDR) for a species (black dots) given full data versus predictions of EDR for the same species given no data. For both, red dashed line denotes the 1-to-1 line. Black line is regression line with posterior draws in grey.}
+	\caption{(A) Estimates of cue rate for a species (black dots) given full data versus predictions of cue rate for the same species given no data. (B) Estimates of effective detection radius (EDR) for a species (black dots) given full data versus predictions of EDR for the same species given no data. For both, red dashed line denotes the 1-to-1 line.\DIFdelbeginFL \DIFdelFL{Black line is regression line with posterior draws in grey.}\DIFdelendFL }
 	\label{fig:species_cv}
 \end{figure}
 
 \begin{figure}[h]
 	\includegraphics{../output/plots/species_cv_distance_traits.png}
-	\caption{Estimates of effective detection radius (EDR) for a species (dots) given full data versus predictions of EDR for the same species given no data, focusing in on species with EDRs between 60 m and 150 m. Colours denote discrete trait group combinations of migratory strategy and habitat preference. Red dashed line denotes the 1-to-1 line. Black line is regression line with posterior draws in grey.}
+	\caption{Estimates of effective detection radius (EDR) for a species (dots) given full data versus predictions of EDR for the same species given no data, focusing in on species with EDRs between 60 m and 150 m. Colours denote discrete trait group combinations of migratory strategy and habitat preference. Red dashed line denotes the 1-to-1 line\DIFdelbeginFL \DIFdelFL{. Black line is regression line with posterior draws in grey}\DIFdelendFL .}
 	\label{fig:distance_cv_traits}
 \end{figure}
 

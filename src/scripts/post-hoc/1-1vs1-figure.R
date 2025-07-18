@@ -3,7 +3,7 @@
 # Multi-species QPAD Detectability
 # posthoc/1-1vs1-figure.R
 # Created December 2023
-# Last Updated August 2024
+# Last Updated July 2025
 
 ####### Import Libraries and External Files #######
 
@@ -90,10 +90,6 @@ rem_diff_model_draws <- diff_model_run$draws(format = "df")
 
 (removal_plot <- ggplot(data = to_plot, mapping = aes(x = Single, y = Multi)) +
     geom_point(alpha = 0.5) +
-    geom_abline(intercept = rem_diff_model_draws$intercept, slope = rem_diff_model_draws$slope,
-                color = "grey", alpha = 0.1) +
-    geom_abline(intercept = mean(rem_diff_model_draws$intercept), slope = mean(rem_diff_model_draws$slope),
-                color = "black") +
     geom_abline(slope = 1, color = "red", linetype = 2) +
     xlim(0,1) +
     ylim(0,1) +
@@ -166,10 +162,6 @@ dis_diff_model_draws <- diff_model_run$draws(format = "df")
 
 (distance_plot <- ggplot(data = to_plot, mapping = aes(x = Single, y = Multi)) +
     geom_point(alpha = 0.5) +
-    geom_abline(intercept = dis_diff_model_draws$intercept, slope = dis_diff_model_draws$slope,
-                color = "grey", alpha = 0.1) +
-    geom_abline(intercept = mean(dis_diff_model_draws$intercept), slope = mean(dis_diff_model_draws$slope),
-                color = "black") +
     geom_abline(slope = 1, color = "red", linetype = 2) +
     xlim(0,800) +
     ylim(0,800) +

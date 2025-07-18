@@ -83,10 +83,6 @@ rem_cv_model_draws <- rem_cv_model_run$draws(format = "df")
 rem_cv_model_summary <- rem_cv_model_run$summary()
 
 removal_cv_plot <- ggplot(data = rem_cv_df, aes(x = True_Exp, y = Predicted_Exp)) +
-  geom_abline(intercept = rem_cv_model_draws$intercept, slope = rem_cv_model_draws$slope,
-              color = "grey", alpha = 0.1) +
-  geom_abline(intercept = mean(rem_cv_model_draws$intercept), slope = mean(rem_cv_model_draws$slope),
-              color = "black") +
   geom_point() +
   geom_abline(slope = 1, color = "red", linetype = 2) +
   xlim(0,0.8) + ylim(0,0.8) +
@@ -138,10 +134,6 @@ dis_cv_model_draws <- dis_cv_model_run$draws(format = "df")
 dis_cv_model_summary <- dis_cv_model_run$summary()
 
 distance_cv_plot <- ggplot(data = dis_cv_df, aes(x = True_Exp, y = Predicted_Exp)) +
-  geom_abline(intercept = dis_cv_model_draws$intercept, slope = dis_cv_model_draws$slope,
-              color = "grey", alpha = 0.1) +
-  geom_abline(intercept = mean(dis_cv_model_draws$intercept), slope = mean(dis_cv_model_draws$slope),
-              color = "black") +
   geom_point() +
   geom_abline(slope = 1, color = "red", linetype = 2) +
   xlim(0,500) + ylim(0,500) +
@@ -160,10 +152,6 @@ dis_cv_df$Habitat <- ifelse(dis_cv_df$Habitat == 1,
 dis_cv_df$Trait_Group <- paste0(dis_cv_df$Habitat, "-", dis_cv_df$Migrant)
 
 distance_cv_traits_plot <- ggplot(data = dis_cv_df, aes(x = True_Exp, y = Predicted_Exp)) +
-  geom_abline(intercept = dis_cv_model_draws$intercept, slope = dis_cv_model_draws$slope,
-              color = "grey", alpha = 0.1) +
-  geom_abline(intercept = mean(dis_cv_model_draws$intercept), slope = mean(dis_cv_model_draws$slope),
-              color = "black") +
   geom_point(aes(color = Trait_Group)) +
   geom_abline(slope = 1, color = "red", linetype = 2) +
   xlim(60,150) + ylim(60,150) +
