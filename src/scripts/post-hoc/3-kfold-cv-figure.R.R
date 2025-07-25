@@ -128,7 +128,7 @@ preference <- data.frame(table(lppd_summary$Model_Preference))
     geom_point(aes(color = Model_Preference)) +
     geom_hline(yintercept = 0) +
     xlab("Log(Sample Size)") +
-    ylab("Mean LPPD Difference") +
+    ylab("Mean LPPD Difference\n(Cue Rate)") +
     theme(legend.position = "none") +
     NULL)
 
@@ -248,7 +248,7 @@ preference <- data.frame(table(lppd_summary$Model_Preference))
     geom_point(aes(color = Model_Preference)) +
     geom_hline(yintercept = 0) +
     xlab("Log(Sample Size)") +
-    ylab("Mean LPPD Difference") +
+    ylab("Mean LPPD Difference\n(Effective Detection Radius)") +
     theme(legend.position = "none") +
     NULL
 )

@@ -92,8 +92,8 @@ removal_plot <- ggplot(data = to_plot, aes(x = Code, y = exp(mean))) +
   geom_point(size = 4, color = "darkred") +
   geom_errorbar(aes(ymin = exp(q5), ymax = exp(q95)), width=.1, color = "darkred") +
   ylim(0,1) +
-  xlab("Predicted Cue Rate") + 
-  ylab("Species") +
+  ylab("Predicted Cue Rate") + 
+  xlab("Species") +
   theme(legend.position = "none") +
   NULL
 
@@ -159,8 +159,8 @@ distance_plot <- ggplot(data = to_plot, aes(x = Code, y = exp(mean) * 100)) +
   geom_point(data = other_sp_df, aes(y = mean, x= Species), size = 0.5, position=position_jitter(width = 0.2)) +
   geom_point(size = 4, color = "darkred") +
   geom_errorbar(aes(ymin = exp(q5) * 100, ymax = exp(q95) * 100), width=.1, color = "darkred") +
-  xlab("Predicted EDR") + 
-  ylab("Species") +
+  ylab("Predicted EDR") + 
+  xlab("Species") +
   ylim(0,600) +
   theme(legend.position = "none") +
   NULL
